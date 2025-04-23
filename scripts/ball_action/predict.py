@@ -7,7 +7,7 @@ import numpy as np
 
 import os
 import sys
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 print('added to sys.path')
 
 from src.ball_action.annotations import raw_predictions_to_actions, prepare_game_spotting_results
