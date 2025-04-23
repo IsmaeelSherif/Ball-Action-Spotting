@@ -4,6 +4,11 @@ from pathlib import Path
 from tqdm import tqdm
 import numpy as np
 
+
+import os
+print("Current directory:", os.getcwd())
+os.chdir("/kaggle/working/Ball-Action-Spotting")
+
 from src.ball_action.annotations import raw_predictions_to_actions, prepare_game_spotting_results
 from src.utils import get_best_model_path, get_video_info
 from src.predictors import MultiDimStackerPredictor
