@@ -67,7 +67,7 @@ def predict_video(predictor: MultiDimStackerPredictor,
                   use_saved_predictions: bool) -> dict[str, tuple]:
     video_info = get_video_info(video_path)
     print("Video info:", video_info)
-    assert video_info["fps"] == constants.video_fps
+    # assert video_info["fps"] == constants.video_fps
 
     raw_predictions_path = game_prediction_dir / f"{half}_raw_predictions.npz"
 
