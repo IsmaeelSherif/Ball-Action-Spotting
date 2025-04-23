@@ -1,3 +1,8 @@
+import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+print('added to sys.path')
+
 import argparse
 from pathlib import Path
 from pprint import pprint
