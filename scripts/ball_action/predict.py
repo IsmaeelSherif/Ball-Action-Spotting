@@ -116,6 +116,12 @@ def predict_fold(experiment: str, fold: int, gpu_id: int,
                  challenge: bool, use_saved_predictions: bool, pred_dir, video_path):
     print(f"Predict games: {experiment=}, {fold=}, {gpu_id=} {challenge=}")
     experiment_dir = constants.experiments_dir / experiment / f"fold_{fold}"
+    print('experiment_dir', experiment_dir)
+
+    p = Path(experiment_dir)
+    for item in p.iterdir():
+        print('item', item)
+
     model_path = get_best_model_path(experiment_dir)
     print("Model path:", model_path)
     predictor = MultiDimStackerPredictor(model_path, device=f"cuda:{gpu_id}", tta=TTA)
