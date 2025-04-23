@@ -19,6 +19,7 @@ TTA = True
 def parse_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument("--pred_dir", required=True, type=str)
+    parser.add_argument("--video_path", required=True, type=str)
     parser.add_argument("--folds", default="all", type=str)
     return parser.parse_args()
 
@@ -136,4 +137,4 @@ if __name__ == "__main__":
     gpu_id = 0
 
     for fold in folds:
-        predict_fold(experiment, fold, gpu_id, challenge, use_saved_predictions)
+        predict_fold(experiment, fold, gpu_id, challenge, use_saved_predictions, args.pred_dir, args.video_path)
