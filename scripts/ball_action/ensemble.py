@@ -10,8 +10,8 @@ from src.ball_action import constants
 
 def parse_arguments():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--experiments", required=True, type=str)
-    parser.add_argument("--challenge", action="store_true")
+    parser.add_argument("--pred_dir", required=True, type=str)
+    parser.add_argument("--ensemble_path", required=True, type=str)
     return parser.parse_args()
 
 
@@ -35,23 +35,21 @@ def load_and_blend_predictions(prediction_paths: list[Path]):
     return blend_prediction, frame_indexes
 
 
-def ensemble_challenge_video(game: str, half: int, game_ensemble_path: Path):
+def ensemble_challenge_video(pred_dir, game: str, half: int, ensemble_path: Path):
     prediction_paths = []
-    for experiment in experiments:
-        for fold in constants.folds:
-            prediction_path = (
-                    constants.predictions_dir
-                    / experiment
-                    / "challenge"
-                    / f"fold_{fold}"
-                    / game
-                    / f"{half}_raw_predictions.npz"
-            )
-            prediction_paths.append(prediction_path)
+    for fold in constants.folds:
+        prediction_path = (
+                pred_dir
+                / f"fold_{fold}"
+                / game
+                / f"{half}_raw_predictions.npz"
+        )
+        prediction_paths.append(prediction_path)
+
     print("Blend raw predictions:")
     pprint(prediction_paths)
     blend_prediction, frame_indexes = load_and_blend_predictions(prediction_paths)
-    blend_prediction_path = game_ensemble_path / f"{half}_raw_predictions.npz"
+    blend_prediction_path = ensemble_path / f"{half}_raw_predictions.npz"
     np.savez(
         blend_prediction_path,
         frame_indexes=frame_indexes,
@@ -90,18 +88,16 @@ def ensemble_cv_video(fold: int, game: str, half: int, game_ensemble_path: Path)
     return class2actions
 
 
-def ensemble_challenge(experiments: list[str]):
-    print("Ensemble challenge predictions:", experiments)
-    ensemble_path = constants.predictions_dir / ",".join(experiments) / "challenge" / "ensemble"
-    for game in constants.challenge_games:
-        game_ensemble_path = ensemble_path / game
-        game_ensemble_path.mkdir(parents=True, exist_ok=True)
-        half2class_actions = dict()
-        for half in constants.halves:
-            class_actions = ensemble_challenge_video(game, half, game_ensemble_path)
-            half2class_actions[half] = class_actions
+def ensemble_challenge(pred_dir, ensemble_path):
+    ensemble_path = Path(ensemble_path)
+    game = "game"
+    ensemble_path.mkdir(parents=True, exist_ok=True)
+    half2class_actions = dict()
+    class_actions = ensemble_challenge_video(pred_dir, game, 1, ensemble_path)
+    half2class_actions[1] = class_actions
+    half2class_actions[2] = {}
 
-        prepare_game_spotting_results(half2class_actions, game, ensemble_path)
+    prepare_game_spotting_results(half2class_actions, game, ensemble_path)
 
 
 def ensemble_cv(experiments: list[str]):
@@ -123,8 +119,7 @@ def ensemble_cv(experiments: list[str]):
 
 if __name__ == "__main__":
     args = parse_arguments()
-    experiments = sorted(args.experiments.split(','))
-    if args.challenge:
-        ensemble_challenge(experiments)
-    else:
-        ensemble_cv(experiments)
+    experiment = "ball_finetune_long_004"
+
+    
+    ensemble_challenge(args.pred_dir, args.ensemble_path)
