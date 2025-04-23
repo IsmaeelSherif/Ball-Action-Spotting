@@ -62,10 +62,9 @@ def get_raw_predictions(predictor: MultiDimStackerPredictor,
 
 def predict_video(predictor: MultiDimStackerPredictor,
                   half: int,
-                  game_dir: Path,
+                  video_path: Path,
                   game_prediction_dir: Path,
                   use_saved_predictions: bool) -> dict[str, tuple]:
-    video_path = game_dir / f"{half}_{RESOLUTION}.mkv"
     video_info = get_video_info(video_path)
     print("Video info:", video_info)
     assert video_info["fps"] == constants.video_fps
@@ -97,7 +96,6 @@ def predict_game(predictor: MultiDimStackerPredictor,
                  prediction_dir: Path,
                  use_saved_predictions: bool):
     game = "game"
-    game_dir = video_path
     game_prediction_dir = prediction_dir / game
     game_prediction_dir.mkdir(parents=True, exist_ok=True)
     print("Predict game:", video_path)
@@ -106,7 +104,7 @@ def predict_game(predictor: MultiDimStackerPredictor,
     half2class_actions[2] = dict()
     
     class_actions = predict_video(
-        predictor, 1, game_dir, game_prediction_dir, use_saved_predictions
+        predictor, 1, video_path, game_prediction_dir, use_saved_predictions
     )
     half2class_actions[1] = class_actions
 
