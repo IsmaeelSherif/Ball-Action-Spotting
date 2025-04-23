@@ -8,7 +8,7 @@ import cv2
 from src.frame_fetchers.abstract import AbstractFrameFetcher
 
 
-class OpenCVFrameFetcher(AbstractFrameFetcher):
+class NvDecFrameFetcher(AbstractFrameFetcher):
     def __init__(self, video_path: str | Path, gpu_id: int):
         super().__init__(video_path=video_path, gpu_id=gpu_id)
         self._cap = cv2.VideoCapture(str(self.video_path))
