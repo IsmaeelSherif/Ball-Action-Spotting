@@ -95,6 +95,7 @@ def ensemble_cv_video(fold: int, game: str, half: int, game_ensemble_path: Path)
 
 def ensemble_challenge(pred_dir, ensemble_path):
     ensemble_path = Path(ensemble_path)
+    pred_dir = Path(pred_dir)
     game = "game"
     ensemble_path.mkdir(parents=True, exist_ok=True)
     half2class_actions = dict()
