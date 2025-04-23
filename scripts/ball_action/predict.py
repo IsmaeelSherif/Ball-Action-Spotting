@@ -6,8 +6,9 @@ import numpy as np
 
 
 import os
-print("Current directory:", os.getcwd())
-os.chdir("/kaggle/working/Ball-Action-Spotting")
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+print('added to sys.path')
 
 from src.ball_action.annotations import raw_predictions_to_actions, prepare_game_spotting_results
 from src.utils import get_best_model_path, get_video_info
