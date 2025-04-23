@@ -126,6 +126,7 @@ def predict_fold(experiment: str, fold: int, gpu_id: int,
     print("Model path:", model_path)
     predictor = MultiDimStackerPredictor(model_path, device=f"cuda:{gpu_id}", tta=TTA)
     
+    pred_dir = Path(pred_dir)
     prediction_dir = pred_dir / f"fold_{fold}"
     if not prediction_dir.exists():
         prediction_dir.mkdir(parents=True, exist_ok=True)

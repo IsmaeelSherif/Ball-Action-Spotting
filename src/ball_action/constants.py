@@ -1,6 +1,7 @@
 from src.constants import data_dir, soccernet_dir, configs_dir
+from pathlib import Path
 
-ball_action_dir = "data/ball_action"
+ball_action_dir = Path("data/ball_action")
 configs_dir = configs_dir / "ball_action"
 experiments_dir = ball_action_dir / "experiments"
 predictions_dir = ball_action_dir / "predictions"
