@@ -26,6 +26,7 @@ def parse_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument("--pred_dir", required=True, type=str)
     parser.add_argument("--video_path", required=True, type=str)
+    parser.add_argument("--weights_dir", required=True, type=str)
     parser.add_argument("--folds", default="all", type=str)
     return parser.parse_args()
 
@@ -113,9 +114,10 @@ def predict_game(predictor: MultiDimStackerPredictor,
 
 
 def predict_fold(experiment: str, fold: int, gpu_id: int,
-                 challenge: bool, use_saved_predictions: bool, pred_dir, video_path):
+                 challenge: bool, use_saved_predictions: bool, pred_dir, video_path, weights_dir):
     print(f"Predict games: {experiment=}, {fold=}, {gpu_id=} {challenge=}")
-    experiment_dir = constants.experiments_dir / experiment / f"fold_{fold}"
+    weights_dir = Path(weights_dir)
+    experiment_dir = weights_dir / f"fold_{fold}"
     print('experiment_dir', experiment_dir)
 
     p = Path(experiment_dir)
@@ -150,4 +152,4 @@ if __name__ == "__main__":
     gpu_id = 0
 
     for fold in folds:
-        predict_fold(experiment, fold, gpu_id, challenge, use_saved_predictions, args.pred_dir, args.video_path)
+        predict_fold(experiment, fold, gpu_id, challenge, use_saved_predictions, args.pred_dir, args.video_path, args.weights_dir)
