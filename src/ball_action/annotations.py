@@ -80,7 +80,7 @@ def raw_predictions_to_actions(frame_indexes: list[int], raw_predictions: np.nda
     return class2actions
 
 
-def prepare_game_spotting_results(half2class_actions: dict, game: str, prediction_dir: Path):
+def prepare_game_spotting_results(half2class_actions: dict, game: str, prediction_dir: Path, video_fps=25.0):
     game_prediction_dir = prediction_dir / game
     game_prediction_dir.mkdir(parents=True, exist_ok=True)
 
@@ -92,8 +92,8 @@ def prepare_game_spotting_results(half2class_actions: dict, game: str, predictio
     for half in half2class_actions.keys():
         for cls, (frame_indexes, confidences) in half2class_actions[half].items():
             for frame_index, confidence in zip(frame_indexes, confidences):
-                position = round(frame_index / constants.video_fps * 1000)
-                seconds = int(frame_index / constants.video_fps)
+                position = round(frame_index / video_fps * 1000)
+                seconds = int(frame_index / video_fps)
                 prediction = {
                     "gameTime": f"{half} - {seconds // 60:02}:{seconds % 60:02}",
                     "label": cls,

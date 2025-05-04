@@ -108,7 +108,9 @@ def predict_game(predictor: MultiDimStackerPredictor,
     )
     half2class_actions[1] = class_actions
 
-    prepare_game_spotting_results(half2class_actions, game, prediction_dir)
+    video_info = get_video_info(video_path)
+    print('using fps', video_info['fps'])
+    prepare_game_spotting_results(half2class_actions, game, prediction_dir, video_info['fps'])
 
 
 def predict_fold(experiment: str, fold: int, gpu_id: int,
